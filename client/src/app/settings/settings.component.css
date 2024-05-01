@@ -1,0 +1,34 @@
+a {
+  padding: 7px;
+  color: bisque;
+  background-color:chocolate;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: large;
+  height: fit-content;
+}
+
+a:hover {
+  padding: 8px;
+  background-color: brown;
+}
+
+.div-top {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.profile-pic {
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
+}
+.profile-container {
+  display: flex;
+ }
+
+.profile-container > :not(:first-child) {
+  margin-left: 60px;
+  margin-top: 50px;
+}

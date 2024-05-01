@@ -1,0 +1,69 @@
+.link {
+  padding: 7px;
+  color: bisque;
+  background-color:chocolate;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: large;
+  height: fit-content;
+}
+
+.link:hover {
+  padding: 8px;
+  background-color: brown;
+  color: bisque;
+  font-weight: normal;
+}
+
+.div-top {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.new-post {
+  margin-top: 60px;
+  border-width: 2px;
+  border-radius: 7px;
+  border-color: brown;
+  border-style: outset;
+  width: 70%;
+  height: auto;
+}
+
+textarea {
+  border: none;
+  width: 100%;
+  height:fit-content;
+  color: brown;
+
+}
+
+textarea:focus {
+  outline: none;
+}
+
+.post-btn {
+  display: flex;
+  justify-content: space-between;
+}
+
+.feed {
+  margin-top: 30px;
+}
+
+.save {
+  flex-direction: row;
+  display: flex;
+}
+
+.feed > a {
+  margin-bottom: 0;
+  text-decoration: none;
+  color: brown;
+}
+
+.feed > a:hover {
+  color: rgb(123, 35, 0);
+  font-weight: bold;
+}

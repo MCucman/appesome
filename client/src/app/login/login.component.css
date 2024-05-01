@@ -1,0 +1,14 @@
+.all {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+h5 {
+  margin-bottom: 40px;
+}
+
+.my-card {
+  height: fit-content;
+  color: brown;
+}

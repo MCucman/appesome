@@ -1,0 +1,47 @@
+<div class="all">
+  <div class="card my-card" style="width: 25rem;">
+    <div class="card-body">
+      <h5 class="card-title">Sign up</h5>
+      <form (submit)="register()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email">
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password">
+        </div>
+        <div class="mb-3">
+          <label for="password2" class="form-label">Repeat password</label>
+          <input type="password" class="form-control" id="password2">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card my-card" style="width: 25rem;">
+    <div class="card-body">
+      <h5 class="card-title">Log in</h5>
+      <form (submit)="login()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email">
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

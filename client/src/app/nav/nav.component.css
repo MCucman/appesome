@@ -1,0 +1,15 @@
+header {
+  padding: 5px;
+  margin-bottom: 30px;
+}
+
+nav {
+  background-color:bisque;
+  overflow: hidden;
+}
+
+nav > h2 {
+  margin-left: 3%;
+  color: brown;
+}
+

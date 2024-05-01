@@ -1,0 +1,59 @@
+<div class="div-top">
+  <h3> Hi, {{username()}} </h3>
+  <div class="row">
+    <div class="col-lg-5">
+      <a class="link" routerLink="/profile"> Profile </a>
+    </div>
+  </div>
+</div>
+
+<div class="new-post">
+  <textarea name="post" id="post" placeholder="Type something..."></textarea>
+  <div class="post-btn">
+    <button> Add photo </button>
+    <button> Post </button>
+  </div>
+</div>
+
+<div class="feed">
+  <h4> Feed </h4>
+  <a routerLink="/profile"> {{username()}} </a>
+  <div class="card mb-3" style="max-width: 80%; color: rgb(105, 25, 0);">
+    <div class="row g-0">
+      <div class="col-md-4" style="max-width: 250px;">
+        <img src="..." class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <p class="card-text"><small class="text-body-secondary">Posted 3 mins ago</small></p>
+          <p class="card-text"><small class="text-body-secondary"># likes</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="save">
+      <button style="max-width: 250px">Save picture</button>
+      <button> Like this post </button>
+    </div>
+  </div>
+
+  <a routerLink="/profile"> {{username()}} </a>
+  <div class="card mb-3" style="max-width: 80%; color: rgb(105, 25, 0);">
+    <div class="row g-0">
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <p class="card-text"><small class="text-body-secondary">Posted 3 mins ago</small></p>
+          <p class="card-text"><small class="text-body-secondary"># likes</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="save">
+      <button> Like this post </button>
+    </div>
+  </div>
+</div>
+
+

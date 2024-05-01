@@ -1,0 +1,30 @@
+a {
+  padding: 7px;
+  color: bisque;
+  background-color:chocolate;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: large;
+  height: fit-content;
+}
+
+a:hover {
+  padding: 8px;
+  background-color: brown;
+}
+
+.div-top {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+
+.post {
+  margin-top: 30px;
+  color: rgb(132, 50, 2);
+}
+
+.my-card {
+  margin-right: 30px;
+}

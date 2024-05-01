@@ -1,0 +1,27 @@
+.container {
+  min-height: calc(100% - 100px);
+  margin: 0 100px;
+  background: white;
+  padding: 30px;
+}
+
+html, body {
+  background: rgb(248, 246, 242);
+  min-width: 576px;
+  color: rgb(94, 25, 0);
+}
+
+button {
+  padding: 3px 6px;
+  margin: 3px;
+  color: brown;
+  background-color:antiquewhite;
+  border-radius: 10px;
+  text-decoration: none;
+  border: none;
+}
+
+button:hover {
+  background-color: rgb(249, 212, 167);
+  padding: 4px 8px;
+}
