@@ -19,16 +19,18 @@ a:hover {
   margin: 20px 0;
 }
 
-.profile-pic {
-  height: 200px;
-  width: 200px;
-  border-radius: 100%;
-}
-.profile-container {
-  display: flex;
- }
-
 .profile-container > :not(:first-child) {
   margin-left: 60px;
   margin-top: 50px;
+}
+
+.change {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-top: 50px;
+}
+
+.change > :first-child {
+  margin-bottom: 20px;
 }
