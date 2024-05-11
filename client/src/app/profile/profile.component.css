@@ -9,7 +9,6 @@ a {
 }
 
 a:hover {
-  padding: 8px;
   background-color: brown;
 }
 
@@ -31,4 +30,8 @@ a:hover {
 
 ul {
   list-style-type: none;
+}
+
+button {
+  width: max-content;
 }

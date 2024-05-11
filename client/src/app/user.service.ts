@@ -9,11 +9,26 @@ import { HttpClient } from '@angular/common/http';
 
 export class UserService {
 
+  public currentUser: User | null = null;
+  users: WritableSignal<User[]> = signal([]);
+
   constructor(protected http: HttpClient) {
     // this.getUsers({}).subscribe();
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      this.currentUser = JSON.parse(storedUser);
+    }
   }
 
-  users: WritableSignal<User[]> = signal([]);
+  setCurrentUser(user: User) {
+    this.currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  clearCurrentUser() {
+    this.currentUser = null;
+    localStorage.removeItem('currentUser');
+  }
 
   checkUsernameExists(username: string): Observable<boolean> {
     return this.http.get<boolean>(`/api/user/exists/${username}`);
@@ -26,6 +41,7 @@ export class UserService {
         this.users.update((users: User[]) => {
           return [res, ...users];
         });
+        this.setCurrentUser(res);
       })
     )
   }
@@ -43,10 +59,6 @@ export class UserService {
     );
   }
 
-  isLoggedIn(): Observable<boolean> {
-    return this.http.get<boolean>('/api/user');
-  }
-
   login(user: User): Observable<User> {
     return this.http.patch<User>('/api/user', user).pipe(
       tap((res: User) => {
@@ -58,7 +70,9 @@ export class UserService {
             return u;
           });
         })
-    }))
+        this.setCurrentUser(res);
+      })
+   )
   }
 }
 

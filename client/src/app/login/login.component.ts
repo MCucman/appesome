@@ -14,7 +14,7 @@ export interface User {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -33,9 +33,8 @@ export class LoginComponent {
     password2: new FormControl("")
   });
 
-  public curentUser = '';
-
   constructor(protected userService: UserService, protected router: Router) {}
+
   register(): void {
     const user = this.form.value;
     this.userService.checkUsernameExists(user.username).subscribe( {next:
@@ -55,10 +54,9 @@ export class LoginComponent {
   createUser() {
     const user = this.form.value;
     user.isLoggedIn = true;
+    user.description = '';
     this.userService.createUser(user).subscribe({next:
       ((res: any) => {
-        console.log(res);
-        this.curentUser = res.username;
         this.router.navigate(["/home"]);
       }),error:
       (err => {
@@ -75,20 +73,26 @@ export class LoginComponent {
     delete user['username2'];
     delete user['email2'];
     delete user['password2'];
-    this.userService.checkData(user).subscribe({ next:
-      ((res: any) => {
-        if(user.email == res.email && user.password == res.password){
-          this.userService.login(user).subscribe();
-          this.createUser = res.username;
-          this.router.navigate(["/home"]);
+    this.userService.checkUsernameExists(user.username).subscribe( {next:
+      (exists => {
+        if (exists) {
+          this.userService.checkData(user).subscribe({ next:
+            ((res: any) => {
+              if(user.email == res.email && user.password == res.password){
+                this.userService.login(user).subscribe();
+                this.router.navigate(["/home"]);
+              }
+            })
+          })
         }else{
           this.form2.reset();
           console.log('invalid credentials');
         }
-      }), error: ((err: any) => {
-        console.error(err);
       })
-    })
+    }),({error: (err: any) => {
+      console.error(err);
+        }
+      })
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="div-top">
-  <div class="d-flex flex-column">
-      <p>username: </p>
-      <p>email: </p>
+  <div *ngIf="userService.currentUser" class="ms-5">
+    <p>username: {{ userService.currentUser.username }} </p>
+    <p>email: {{ userService.currentUser.email }} </p>
   </div>
   <div class="row">
     <div class="col-lg-5">
@@ -12,11 +12,12 @@
     </div>
   </div>
 </div>
-
-<p>description</p>
-<div class="change">
+<div *ngIf="userService.currentUser" >
+  <p> {{ userService.currentUser.description }} </p>
+</div>
+<div class="change mt-5">
   <div class="ch-title">
-    <h5 class="offcanvas-title">Change </h5>
+    <h5 class="offcanvas-title"> Change </h5>
   </div>
 
   <div class="offcanvas-body">

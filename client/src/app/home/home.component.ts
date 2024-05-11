@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { RouterLink } from '@angular/router';
 import { PostService } from '../post.service';
 import { CommonModule, DatePipe } from '@angular/common';
+import { UserService } from '../user.service';
 
 export interface Post {
   _id: string,
@@ -26,11 +27,8 @@ export class HomeComponent {
     content: new FormControl("")
   });
 
-  constructor(protected postService: PostService){}
+  constructor(protected postService: PostService, protected userService: UserService){}
 
-  username(): string {
-    return 'username';
-  }
   createPost() {
     const post: Post = this.form.value;
     if(post.title != null && post.title != "" && post.content != null && post.content != ""){

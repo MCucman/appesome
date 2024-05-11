@@ -61,7 +61,8 @@ const { connect_to_db, ObjectId } = require("./db");
     app.patch("/api/user", async (req, res) => {
         const username = req.body.username;
         await db.collection("user").updateOne({ username: username }, { $set: { isLoggedIn: true } });
-        res.send({ message: "Successfully updated" });
+        const user = await db.collection("user").findOne({ username: username });
+        res.send(user);
     });
 
     app.delete("/api/user/:id", async (req, res) => {

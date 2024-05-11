@@ -9,7 +9,6 @@
 }
 
 .link:hover {
-  padding: 8px;
   background-color: brown;
   color: bisque;
   font-weight: normal;
@@ -62,9 +61,14 @@ li > a:hover {
   border: none;
   font-size: medium;
   font-weight: bold;
+  width: 100%;
   color: rgb(123, 35, 0);
 }
 
 #title:focus {
   outline: none;
+}
+
+button {
+  width: max-content;
 }
