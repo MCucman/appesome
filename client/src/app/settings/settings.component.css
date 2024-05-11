@@ -27,8 +27,12 @@ a:hover {
 .change {
   display: flex;
   flex-direction: column;
+  margin: 20px;
+}
+
+.form {
   width: 80%;
-  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .change > :first-child {

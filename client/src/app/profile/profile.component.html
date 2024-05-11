@@ -17,14 +17,26 @@
 
 <div class="post">
   <h4> Your posts </h4>
-  <div class="card mb-3" style="max-width: 80%; color: rgb(105, 25, 0);">
-    <div class="row g-0 col-md-10 card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      <p class="card-text"><small class="text-body-secondary">Posted 3 mins ago</small></p>
-      <p class="card-text"><small class="text-body-secondary"># likes</small></p>
-    </div>
-  </div>
+      <ul id="posts">
+        <li *ngFor="let post of postService.posts()">
+          <div class="card mt-5" style="max-width: 80%; color: rgb(105, 25, 0);">
+            <div class="d-inline-flex">
+              <div class="row g-0 col-md-10 card-body">
+                <h5 class="card-title"> {{ post.title }} </h5>
+                <p class="card-text"> {{ post.content }} </p>
+                <p class="card-text"><small class="text-body-secondary">Posted at {{ post.created_at }} </small></p>
+                <p class="card-text"><small class="text-body-secondary"> {{ post.likes }} likes</small></p>
+              </div>
+              <div class="position-relative">
+                <div class="position-relative top-100 start-0">
+                  <button (click)="deletePost(post)" > Delete this post </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
 </div>
-
-<button type="submit">Log out</button>
+<div  class="d-flex justify-content-end">
+  <button type="submit" >Log out</button>
+</div>

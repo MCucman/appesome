@@ -1,4 +1,4 @@
-<div class="div-top">
+<div class="d-flex justify-content-between mt-3">
   <h3> Hi, {{username()}} </h3>
   <div class="row">
     <div class="col-lg-5">
@@ -8,44 +8,37 @@
 </div>
 
 <div class="new-post">
-  <input name="title" id="title" placeholder="Title...">
-  <textarea name="post" id="post" placeholder="Type something..."></textarea>
-  <div class="post-btn justify-content-end">
-    <button> Post </button>
-  </div>
+  <form [formGroup]="form" (ngSubmit)="createPost()">
+    <input formControlName="title" type="text" id="title" placeholder="Title...">
+    <textarea formControlName="content" type="text" id="content" placeholder="Type something..."></textarea>
+    <div class="d-flex justify-content-end">
+      <button type="submit"> Post </button>
+    </div>
+  </form>
 </div>
 
-<div class="feed">
+<div class="mt-5">
   <h4> Feed </h4>
-  <a routerLink="/profile"> {{username()}} </a>
-  <div class="card mb-3" style="max-width: 80%; color: rgb(105, 25, 0);">
-    <div class="card-body row g-0 col-md-10">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      <p class="card-text"><small class="text-body-secondary">Posted 3 mins ago</small></p>
-      <p class="card-text"><small class="text-body-secondary"># likes</small></p>
-    </div>
-    <div class="save">
-      <button> Like this post </button>
-    </div>
-  </div>
-
-  <a routerLink="/profile"> {{username()}} </a>
-  <div class="card mb-3" style="max-width: 80%; color: rgb(105, 25, 0);">
-    <div class="row g-0">
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          <p class="card-text"><small class="text-body-secondary">Posted 3 mins ago</small></p>
-          <p class="card-text"><small class="text-body-secondary"># likes</small></p>
+  <ul class="mt-5" id="posts">
+    <li *ngFor="let post of postService.posts()">
+      <a routerLink="/profile"> {{ username() }} </a>
+      <div class="card mb-5" style="max-width: 80%; color: rgb(105, 25, 0);">
+        <div class="d-inline-flex">
+          <div class="card-body row g-0 col-md-10">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.content }}</p>
+            <p class="card-text"><small class="text-body-secondary">Posted at {{ post.created_at | date: "short" }}</small></p>
+            <p class="card-text"><small class="text-body-secondary">{{ post.likes }} likes</small></p>
+          </div>
+          <div class="position-relative">
+            <div class="position-relative top-100 start-0">
+              <button (click)="addLike(post)"> Like this post </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="save">
-      <button> Like this post </button>
-    </div>
-  </div>
+    </li>
+  </ul>
 </div>
 
 
