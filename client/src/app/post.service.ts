@@ -1,7 +1,8 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Post } from './home/home.component';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, ObservedValueOf, tap } from 'rxjs';
+import { User } from './login/login.component';
 
 @Injectable({
   providedIn: 'root'
@@ -35,14 +36,15 @@ export class PostService {
     );
   }
 
-  updatePost(post: Post): Observable<Post> {
-    return this.http.patch<Post>(`/api/post/${post._id}`, post)
+  updatePost(post: Post, user: User): Observable<Post> {
+    return this.http.patch<Post>(`/api/post/${post._id}/${user.username}`, {post, user})
       .pipe(
         tap((res: Post) => {
           this.posts.update((posts: Post[]) => {
             return posts.map(p => {
-              if (p._id === post._id) {
-                return { ...p, likes: post.likes+1 };
+              if (p._id === post._id && !post.likes.includes(user.username)) {
+                post.likes.push(user.username);
+                return { ...p, likes: post.likes };
               }
               return p;
             });
@@ -63,4 +65,21 @@ export class PostService {
       })
     )
   }
+
+  updatePosts(oldUsername: string, newUsername: string): Observable<Post[]>{
+    return this.getPosts().pipe(
+      tap((res: Post[]) => {
+        this.posts.update((posts: Post[]) => {
+          for(let post of posts) {
+            if(post.author == oldUsername)
+              post.author = newUsername;
+            if(post.likes.indexOf(oldUsername) != -1)
+              post.likes[post.likes.indexOf(oldUsername)] = newUsername;
+          }
+          return posts;
+        })
+      })
+    )
+  }
+
 }

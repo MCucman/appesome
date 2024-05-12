@@ -18,22 +18,22 @@ a:hover {
   margin: 20px 0;
 }
 
-.profile-container > :not(:first-child) {
-  margin-left: 60px;
+
+.post {
   margin-top: 50px;
+  color: rgb(132, 50, 2);
 }
 
-.change {
-  display: flex;
-  flex-direction: column;
-  margin: 20px;
+.my-card {
+  max-height: 100px;
+  min-width: max-content;
 }
 
-.form {
-  width: 70%;
-  margin-bottom: 50px;
+ul {
+  list-style-type: none;
 }
 
-.change > :first-child {
-  margin-bottom: 20px;
+button {
+  width: max-content;
 }
+

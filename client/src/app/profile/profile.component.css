@@ -1,4 +1,4 @@
-a {
+div > a {
   padding: 7px;
   color: bisque;
   background-color:chocolate;
@@ -8,7 +8,7 @@ a {
   height: fit-content;
 }
 
-a:hover {
+div > a:hover {
   background-color: brown;
 }
 
@@ -20,18 +20,55 @@ a:hover {
 
 
 .post {
-  margin-top: 30px;
+  margin-top: 50px;
   color: rgb(132, 50, 2);
 }
 
 .my-card {
-  margin-right: 30px;
+  max-height: 100px;
+  min-width: max-content;
 }
 
 ul {
   list-style-type: none;
+  padding: 0;
+}
+
+li > a {
+  margin-bottom: 0;
+  padding-left: 0;
+  text-decoration: none;
+  color: brown;
+  width: min-content;
+
+}
+
+li > a:hover {
+  color: rgb(123, 35, 0);
+  font-weight: bold;
 }
 
 button {
   width: max-content;
+}
+
+.popup-container {
+  position: relative;
+  margin-top: 45px;
+  background-color: rgb(251, 243, 234);
+  width: fit-content;
+  height: 100%;
+  border: 1px solid brown;
+  border-radius: 10px;
+}
+
+.popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.popup button {
+  margin-top: 10px;
 }

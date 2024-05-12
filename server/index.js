@@ -58,16 +58,27 @@ const { connect_to_db, ObjectId } = require("./db");
         }
     });
 
-    app.patch("/api/user", async (req, res) => {
-        const username = req.body.username;
-        await db.collection("user").updateOne({ username: username }, { $set: { isLoggedIn: true } });
-        const user = await db.collection("user").findOne({ username: username });
+    app.patch("/api/user/:username", async (req, res) => {
+        const username = req.params.username;
+        const newData = req.body;
+        if(newData['username']){
+            await db.collection("post").updateMany(
+                { likes: username }, 
+                { $set: { "likes.$[i]": newData.username } },
+                {arrayFilters:[{'i':username}]}
+            );
+            await db.collection("post").updateMany(
+                {author: username},
+                {$set: {author: newData.username}}
+            );
+        }
+        const user = await db.collection("user").findOneAndUpdate({ username }, { $set: newData }, { returnDocument: 'after' });
         res.send(user);
-    });
+    })
 
-    app.delete("/api/user/:id", async (req, res) => {
-        const id = new ObjectId(req.params.id);
-        await db.collection("user").deleteOne({ _id: id });
+    app.delete("/api/user/:username", async (req, res) => {
+        const username = req.params.username;
+        await db.collection("user").deleteOne({ username: username });
 
         res.send({ message: "Successfully deleted" });
     });
@@ -90,9 +101,10 @@ const { connect_to_db, ObjectId } = require("./db");
         res.send(post);
     });
 
-    app.patch("/api/post/:id", async (req, res) => {
-        const id = new ObjectId(req.params.id);
-        await db.collection("post").updateOne({ _id: id }, { $inc: { likes: 1 } });
+    app.patch("/api/post/:post_id/:username", async (req, res) => {
+        const post_id = new ObjectId(req.params.post_id);
+        const username = req.params.username;
+        await db.collection("post").updateOne({ _id: post_id }, {$addToSet: { likes: username } });
         res.send({ message: "Successfully updated" });
     });
 

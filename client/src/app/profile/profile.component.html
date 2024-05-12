@@ -1,42 +1,58 @@
-<div class="div-top">
-  <div class="mb-3" >
-    <div *ngIf="userService.currentUser" class="row g-0 col-md-8 card-body">
-      <h5 class="card-title"> {{ userService.currentUser.username }} </h5>
-      <p class="card-text"> {{ userService.currentUser.description }} </p>
+<div *ngIf="userService.currentUser">
+  <div class="div-top">
+    <div class="mb-3" >
+      <div class="row g-0 col-md-8 card-body">
+        <h5 class="card-title"> {{ userService.currentUser.username }} </h5>
+        <p class="card-text"> {{ userService.currentUser.description }} </p>
+      </div>
+    </div>
+    <div class="row my-card">
+      <div class="col-lg-5">
+        <a routerLink="/home"> Home </a>
+      </div>
+      <div class="col-lg-5">
+        <a routerLink="/settings"> Settings </a>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-lg-5">
-      <a routerLink="/home"> Home </a>
-    </div>
-    <div class="col-lg-5">
-      <a routerLink="/settings"> Settings </a>
-    </div>
-  </div>
-</div>
 
-<div class="post">
-  <h4> Your posts </h4>
-      <ul id="posts">
-        <li *ngFor="let post of postService.posts()">
-          <div class="card mt-5" style="max-width: 80%; color: rgb(105, 25, 0);">
-            <div class="d-inline-flex">
-              <div class="row g-0 col-md-10 card-body">
-                <h5 class="card-title"> {{ post.title }} </h5>
-                <p class="card-text"> {{ post.content }} </p>
-                <p class="card-text"><small class="text-body-secondary">Posted at {{ post.created_at }} </small></p>
-                <p class="card-text"><small class="text-body-secondary"> {{ post.likes }} likes</small></p>
+  <div class="post">
+    <h4> Your posts </h4>
+        <ul id="posts">
+          <li *ngFor="let post of postService.posts()">
+            <div class="row">
+              <div class="card mt-5" style="max-width: 80%; color: rgb(105, 25, 0);">
+                <div class="d-inline-flex">
+                  <div class="row g-0 col-md-10 card-body">
+                    <h5 class="card-title"> {{ post.title }} </h5>
+                    <p class="card-text"> {{ post.content }} </p>
+                    <p class="card-text"><small class="text-body-secondary">Posted at {{ post.created_at | date: "short" }} </small></p>
+                    <p class="card-text" (click)="togglePopup(post._id)"><small class="text-body-secondary"> {{ post.likes.length }} likes</small></p>
+                  </div>
+                  <div class="position-relative">
+                    <div class="position-relative top-100 start-0">
+                      <button (click)="deletePost(post)" > Delete this post </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="position-relative">
-                <div class="position-relative top-100 start-0">
-                  <button (click)="deletePost(post)" > Delete this post </button>
+              <div class="popup-container" *ngIf="showPopup(post._id)">
+                <div class="popup">
+                  <h5>Likes</h5>
+                  <ul>
+                    <li *ngFor="let user of post.likes">
+                      <a routerLink="/profile"> {{ user }} </a>
+                    </li>
+                  </ul>
+                  <button (click)="togglePopup(post._id)">Close</button>
                 </div>
               </div>
             </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+  </div>
+  <div  class="d-flex justify-content-end">
+    <button type="submit" (click)="logout()">Log out</button>
+  </div>
 </div>
-<div  class="d-flex justify-content-end">
-  <button type="submit" (click)="logout()">Log out</button>
-</div>
+

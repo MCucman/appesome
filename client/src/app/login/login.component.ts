@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 
 export interface User {
+  _id: string,
   username: string,
   email: string,
   password: string,
   description: string,
-  isLoggedIn: boolean,
+  following: string[]
 }
 
 @Component({
@@ -37,27 +38,31 @@ export class LoginComponent {
 
   register(): void {
     const user = this.form.value;
-    this.userService.checkUsernameExists(user.username).subscribe( {next:
-      (exists => {
-        if (exists) {
-          console.log('Username already exists');
-        } else {
-          this.createUser();
-        }
-      }), error:
-      (error => {
-        console.error('Error checking username existence', error);
-      })}
-    );
+    if(user.username && user.email && user.password){
+      this.userService.checkUsernameExists(user.username).subscribe( {next:
+        (exists => {
+          if (exists) {
+            console.log('Username already exists');
+          } else {
+            this.createUser();
+          }
+        }), error:
+        (error => {
+          console.error('Error checking username existence', error);
+        })}
+      );
+    } else {
+      this.form.reset();
+    }
   }
 
   createUser() {
     const user = this.form.value;
-    user.isLoggedIn = true;
     user.description = '';
+    user.following = [];
     this.userService.createUser(user).subscribe({next:
       ((res: any) => {
-        this.router.navigate(["/home"]);
+        this.router.navigate(["/"]);
       }),error:
       (err => {
         console.error(err);

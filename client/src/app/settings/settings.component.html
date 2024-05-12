@@ -1,64 +1,63 @@
-<div class="div-top">
-  <div *ngIf="userService.currentUser" class="ms-5">
-    <p>username: {{ userService.currentUser.username }} </p>
-    <p>email: {{ userService.currentUser.email }} </p>
-  </div>
-  <div class="row">
-    <div class="col-lg-5">
-      <a routerLink="/home"> Home </a>
+<div *ngIf="userService.currentUser">
+  <div class="div-top">
+    <div class="ms-3">
+      <p>username: {{ userService.currentUser.username }} </p>
+      <p>email: {{ userService.currentUser.email }} </p>
     </div>
-    <div class="col-lg-5">
-      <a routerLink="/profile"> Profile </a>
+    <div class="row">
+      <div class="col-lg-5">
+        <a routerLink="/home"> Home </a>
+      </div>
+      <div class="col-lg-5">
+        <a routerLink="/profile"> Profile </a>
+      </div>
     </div>
   </div>
-</div>
-<div *ngIf="userService.currentUser" >
-  <p> {{ userService.currentUser.description }} </p>
-</div>
-<div class="change mt-5">
-  <div class="ch-title">
-    <h5 class="offcanvas-title"> Change </h5>
+  <div class="w-75 ms-3">
+    <p> {{ userService.currentUser.description }} </p>
+  </div>
+  <div class="change mt-5">
+    <div class="ch-title">
+      <h5 class="offcanvas-title"> Change </h5>
+    </div>
+
+    <div class="offcanvas-body">
+      <form [formGroup]="form" (submit)="updateUser()">
+        <div class="form">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input formControlName="username" type="text" class="form-control" id="username">
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input formControlName="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input formControlName="description" type="text" class="form-control" id="description">
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">New password</label>
+            <input formControlName="password" type="password" class="form-control" id="password">
+          </div>
+
+          <div class="mb-3">
+            <label for="password2" class="form-label">Old password</label>
+            <input formControlName="password2" type="password" class="form-control" id="password2">
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+      <div class="d-flex justify-content-end">
+      <button type="submit" (click)="deleteAcc(userService.currentUser)">Delete account</button>
+    </div>
+    </div>
   </div>
 
-  <div class="offcanvas-body">
-    <form>
-      <div class="form">
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username">
-        </div>
-
-        <div class="mb-3">
-          <label for="desc" class="form-label">Description</label>
-          <input type="text" class="form-control" id="desc">
-        </div>
-
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-        </div>
-
-        <div class="mb-3">
-          <label for="password1" class="form-label">New password</label>
-          <input type="password" class="form-control" id="password1">
-        </div>
-
-        <div class="mb-3">
-          <label for="password2" class="form-label">Repeat password</label>
-          <input type="password" class="form-control" id="password2">
-        </div>
-
-        <div class="mb-3">
-          <label for="password3" class="form-label">Old password</label>
-          <input type="password" class="form-control" id="password3">
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-between">
-        <button type="submit">Submit</button>
-        <button type="submit">Delete account</button>
-      </div>
-    </form>
-  </div>
 </div>
 

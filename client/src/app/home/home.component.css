@@ -44,10 +44,12 @@ textarea:focus {
 
 ul {
   list-style-type: none;
+  padding: 0;
 }
 
 li > a {
   margin-bottom: 0;
+  padding-left: 0;
   text-decoration: none;
   color: brown;
 }
@@ -71,4 +73,24 @@ li > a:hover {
 
 button {
   width: max-content;
+}
+
+.popup-container {
+  position: relative;
+  background-color: rgb(251, 243, 234);
+  width: fit-content;
+  height: 100%;
+  border: 1px solid brown;
+  border-radius: 10px;
+}
+
+.popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.popup button {
+  margin-top: 10px;
 }
