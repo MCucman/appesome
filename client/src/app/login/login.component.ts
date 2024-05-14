@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { CommonModule } from '@angular/common';
 
 export interface User {
   _id: string,
@@ -15,7 +16,7 @@ export interface User {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -42,7 +43,7 @@ export class LoginComponent {
       this.userService.checkUsernameExists(user.username).subscribe( {next:
         (exists => {
           if (exists) {
-            console.log('Username already exists');
+            alert('Username already exists');
           } else {
             this.createUser();
           }
@@ -81,17 +82,19 @@ export class LoginComponent {
     this.userService.checkUsernameExists(user.username).subscribe( {next:
       (exists => {
         if (exists) {
-          this.userService.checkData(user).subscribe({ next:
-            ((res: any) => {
+          this.userService.getUser(user.username).subscribe({ next:
+            ((res: User) => {
               if(user.email == res.email && user.password == res.password){
                 this.userService.login(user).subscribe();
                 this.router.navigate(["/home"]);
+              } else {
+                alert('invalid credentials');
               }
             })
           })
         }else{
           this.form2.reset();
-          console.log('invalid credentials');
+          alert("user doesn't exist");
         }
       })
     }),({error: (err: any) => {

@@ -10,13 +10,17 @@ import { PostService } from './post.service';
 export class UserService {
 
   public currentUser: User | null = null;
+  public otherUser: User | null = null;
   users: WritableSignal<User[]> = signal([]);
 
   constructor(protected http: HttpClient, protected postService: PostService) {
-    // this.getUsers({}).subscribe();
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      this.currentUser = JSON.parse(storedUser);
+    const cUser = localStorage.getItem('currentUser');
+    if (cUser) {
+      this.currentUser = JSON.parse(cUser);
+    }
+    const oUser = localStorage.getItem('otherUser');
+    if (oUser) {
+      this.otherUser = JSON.parse(oUser);
     }
   }
 
@@ -28,6 +32,16 @@ export class UserService {
   clearCurrentUser() {
     this.currentUser = null;
     localStorage.removeItem('currentUser');
+  }
+
+  setOtherUser(user: User) {
+    this.otherUser = user;
+    localStorage.setItem('otherUser', JSON.stringify(user));
+  }
+
+  clearOtherUser() {
+    this.otherUser = null;
+    localStorage.removeItem('otherUser');
   }
 
   checkUsernameExists(id: string): Observable<boolean> {
@@ -45,14 +59,18 @@ export class UserService {
     )
   }
 
-  checkData(user: User): Observable<User>{
-    return this.http.get<User>(`/api/user/${user.username}`);
+  getUser(username: string): Observable<User> {
+    return this.http.get<User>(`/api/user/${username}`);
   }
 
-  getUsers(query?: any): Observable<User[]>{
-    return this.http.post<User[]>(`/api/users`, {query}).pipe(
-      tap((res: User[]) =>{
-        this.users.set(res.reverse());
+  getFollowers(): Observable<User[]>{
+    return this.http.get<User[]>(`/api/users/${this.currentUser?.username}`);
+  }
+
+  follow(): Observable<User> {
+    return this.http.patch<User>(`/api/user/follows/${this.currentUser?.username}/${this.otherUser?.username}`, this.currentUser).pipe(
+      tap((res: User) => {
+        console.log(res);
       })
     );
   }

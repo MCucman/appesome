@@ -33,27 +33,28 @@ export class SettingsComponent {
       username = this.userService.currentUser.username;
       password = this.userService.currentUser.password;
     }
-    if(password != user.password2){
+    if(password !== user['password2']){
       alert('wrong password');
-      return
+      return;
     }
-    delete user['password2'];
     Object.keys(user).forEach(key => {
       if (user[key] === null || user[key] === undefined || user[key] === '') {
         delete user[key];
       }
     });
 
-    this.userService.updateUser(username, user).subscribe({next:
-      ((res: any) => {
-        const currentUser = { ...this.userService.currentUser, ...user };
-        this.userService.setCurrentUser(currentUser);
-        this.router.navigate(["/"]);
-      }),error:
-      (err => {
-        console.error(err);
+    this.userService.checkUsernameExists(user['username']).subscribe({ next:
+      (exists => {
+        if(exists && user['username'] != username){
+          alert("Username taken.");
+          return;
+        }
       })
     });
+    const currentUser = { ...this.userService.currentUser, ...user };
+    this.userService.setCurrentUser(currentUser);
+    this.userService.updateUser(username, user).subscribe();
+    this.router.navigate(["/"]);
   }
 
   deleteAcc(user: User){

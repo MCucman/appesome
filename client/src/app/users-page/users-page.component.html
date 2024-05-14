@@ -1,9 +1,11 @@
+<div *ngIf="userService.otherUser && userService.currentUser">
   <div class="div-top">
-    <div class="mb-3" >
-      <div class="row g-0 col-md-8 card-body">
-        <h5 class="card-title"> user </h5>
-        <p class="card-text"> description </p>
+    <div class="g-0 col-md-8 card-body mb-3">
+      <div class="d-flex justify-content-around w-25 mb-3">
+        <h5 class="card-title"> {{ userService.otherUser.username }} </h5>
+        <button (click)="follow()">follow</button>
       </div>
+      <p class="card-text"> {{ userService.otherUser.description }} </p>
     </div>
     <div class="row my-card">
       <div class="col-lg-5">
@@ -13,19 +15,39 @@
   </div>
 
   <div class="post">
-    <h4> user's posts </h4>
+    <h4> {{ userService.otherUser.username }}'s posts </h4>
         <ul id="posts">
-          <li >
-            <div class="card mt-5" style="max-width: 80%; color: rgb(105, 25, 0);">
-              <div class="d-inline-flex">
-                <div class="row g-0 col-md-10 card-body">
-                  <h5 class="card-title"> title </h5>
-                  <p class="card-text"> content </p>
-                  <p class="card-text"><small class="text-body-secondary">Posted at created_at </small></p>
-                  <p class="card-text"><small class="text-body-secondary"> 0 likes</small></p>
+          <li *ngFor="let post of postService.posts()">
+            <div class="row" *ngIf="post.author==userService.otherUser.username">
+              <div class="card mb-5" style="max-width: 80%; color: rgb(105, 25, 0);">
+                <div class="d-flex justify-content-between">
+                  <div class="row g-0 col-md-10 card-body">
+                    <h5 class="card-title"> {{ post.title }} </h5>
+                    <p class="card-text"> {{ post.content }} </p>
+                    <p class="card-text"><small class="text-body-secondary">Posted at {{ post.created_at | date: "short" }} </small></p>
+                    <p class="card-text" (click)="togglePopup(post._id)"><small class="text-body-secondary"> {{ post.likes.length }} likes</small></p>
+                  </div>
+                  <div class="position-relative">
+                    <div class="position-relative top-100 start-0">
+                      <button (click)="updateLike(post, userService.currentUser)"> Like this post </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="popup-container" *ngIf="showPopup(post._id)">
+                <div class="popup">
+                  <h5>Likes</h5>
+                  <ul>
+                    <li *ngFor="let user of post.likes">
+                      <a routerLink="/usersPage" (click)="getOtherUser(user)"> {{ user }} </a>
+                    </li>
+                  </ul>
+                  <button (click)="togglePopup(post._id)">Close</button>
                 </div>
               </div>
             </div>
           </li>
         </ul>
   </div>
+</div>
+

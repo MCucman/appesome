@@ -12,13 +12,14 @@ const { connect_to_db, ObjectId } = require("./db");
     app.use(express.urlencoded({ extended: false }));
 
     app.get("/api/user/:username", async (req, res) => {
-        const _username = req.params.username;
-        const user = await db.collection("user").findOne({ username: _username });
+        const username = req.params.username;
+        const user = await db.collection("user").findOne({ username: username });
         res.send(user);
     });
 
-    app.get("/api/users", async (req, res) => {
-        const users = await db.collection("user").find().toArray();
+    app.get("/api/users/:username", async (req, res) => {
+        username = req.params.username;
+        const users = await db.collection("user").find({following: username}).toArray();
         res.send(users);
     });
 
@@ -38,12 +39,6 @@ const { connect_to_db, ObjectId } = require("./db");
           }
     });
 
-    app.post("/api/users", async (req, res) => {
-        const query = req.body.query;
-        const users = await db.collection("user").find(query).toArray();
-        res.send(users);
-    })
-
     app.post("/api/user", async (req, res) => {
         const user = req.body;
         try {
@@ -56,6 +51,13 @@ const { connect_to_db, ObjectId } = require("./db");
         } catch (error) {
             res.send({message: error.message})
         }
+    });
+
+    app.patch("/api/user/follows/:currUsername/:othUsername", async (req, res) => {
+        currUsername = req.params.currUsername;
+        othUsername = req.params.othUsername;
+        const user = await db.collection("user").findOneAndUpdate({ username: currUsername }, { $push: { following: othUsername } }, { returnDocument: 'after' });
+        res.send(user);
     });
 
     app.patch("/api/user/:username", async (req, res) => {
@@ -104,7 +106,10 @@ const { connect_to_db, ObjectId } = require("./db");
     app.patch("/api/post/:post_id/:username", async (req, res) => {
         const post_id = new ObjectId(req.params.post_id);
         const username = req.params.username;
-        await db.collection("post").updateOne({ _id: post_id }, {$addToSet: { likes: username } });
+        const post = await db.collection("post").findOne({ _id: post_id });
+        const likes = post.likes;
+        const updatedLikes = likes.includes(username) ? likes.filter(like => like !== username) : [...likes, username];
+        await db.collection("post").updateOne({ _id: post_id }, {$set: { likes: updatedLikes } });
         res.send({ message: "Successfully updated" });
     });
 

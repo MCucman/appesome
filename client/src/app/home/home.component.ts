@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PostService } from '../post.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { UserService } from '../user.service';
@@ -29,7 +29,7 @@ export class HomeComponent {
     content: new FormControl("")
   });
 
-  constructor(protected postService: PostService, protected userService: UserService){}
+  constructor(protected postService: PostService, protected userService: UserService, protected router: Router){}
 
   createPost() {
     const post: Post = this.form.value;
@@ -45,7 +45,7 @@ export class HomeComponent {
     }
   }
 
-  addLike(post: Post, user: User) {
+  updateLike(post: Post, user: User) {
     if(this.userService.currentUser)
       this.postService.updatePost(post, user).subscribe();
   }
@@ -62,5 +62,16 @@ export class HomeComponent {
 
   showPopup(post_id: string){
     return this.popup[post_id];
+  }
+
+  getOtherUser(username: string){
+    if(this.userService.currentUser){
+      if(username != this.userService.currentUser.username){
+        this.userService.getUser(username).subscribe((res: User) => {
+          this.userService.setOtherUser(res);
+        });
+      }else
+        this.router.navigate(['/profile']);
+    }
   }
 }
