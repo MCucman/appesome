@@ -35,8 +35,12 @@ export class SettingsComponent {
     }
     if(password !== user['password2']){
       alert('wrong password');
+      delete user['password2'];
       return;
     }
+
+    delete user['password2'];
+
     Object.keys(user).forEach(key => {
       if (user[key] === null || user[key] === undefined || user[key] === '') {
         delete user[key];
@@ -48,13 +52,15 @@ export class SettingsComponent {
         if(exists && user['username'] != username){
           alert("Username taken.");
           return;
+        } else {
+          const currentUser = { ...this.userService.currentUser, ...user };
+          this.userService.setCurrentUser(currentUser);
+          this.userService.updateUser(username, user).subscribe();
+          this.router.navigate(["/home"]);
         }
       })
     });
-    const currentUser = { ...this.userService.currentUser, ...user };
-    this.userService.setCurrentUser(currentUser);
-    this.userService.updateUser(username, user).subscribe();
-    this.router.navigate(["/home"]);
+
   }
 
   deleteAcc(){
