@@ -1,43 +1,46 @@
-<div  class="all">
-  <div class="card my-card" style="width: 25rem;">
-    <div class="card-body">
-      <h5 class="card-title">Sign up</h5>
-      <form [formGroup]="form" (ngSubmit)="register()">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input formControlName="email" type="email" class="form-control" id="email">
-        </div>
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input formControlName="username" type="text" class="form-control" id="username">
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input formControlName="password" type="password" class="form-control" id="password">
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+<div *ngIf="!userService.currentUser">
+  <div  class="all">
+    <div class="card my-card" style="width: 25rem;">
+      <div class="card-body">
+        <h5 class="card-title">Sign up</h5>
+        <form [formGroup]="form" (ngSubmit)="register()">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input formControlName="username" type="text" class="form-control" id="username">
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input formControlName="email" type="email" class="form-control" id="email">
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input formControlName="password" type="password" class="form-control" id="password">
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card my-card" style="width: 25rem;">
+      <div class="card-body">
+        <h5 class="card-title">Log in</h5>
+        <form [formGroup]="form2" (submit)="login()">
+          <div class="mb-3">
+            <label for="username2" class="form-label">Username</label>
+            <input formControlName="username2" type="text" class="form-control" id="username2">
+          </div>
+          <div class="mb-3">
+            <label for="email2" class="form-label">Email</label>
+            <input formControlName="email2" type="email" class="form-control" id="email2">
+          </div>
+          <div class="mb-3">
+            <label for="password2" class="form-label">Password</label>
+            <input formControlName="password2" type="password" class="form-control" id="password2">
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </div>
   </div>
 
-  <div class="card my-card" style="width: 25rem;">
-    <div class="card-body">
-      <h5 class="card-title">Log in</h5>
-      <form [formGroup]="form2" (submit)="login()">
-        <div class="mb-3">
-          <label for="email2" class="form-label">Email</label>
-          <input formControlName="email2" type="email" class="form-control" id="email2">
-        </div>
-        <div class="mb-3">
-          <label for="username2" class="form-label">Username</label>
-          <input formControlName="username2" type="text" class="form-control" id="username2">
-        </div>
-        <div class="mb-3">
-          <label for="password2" class="form-label">Password</label>
-          <input formControlName="password2" type="password" class="form-control" id="password2">
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  </div>
 </div>

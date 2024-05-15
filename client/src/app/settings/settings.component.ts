@@ -54,11 +54,11 @@ export class SettingsComponent {
     const currentUser = { ...this.userService.currentUser, ...user };
     this.userService.setCurrentUser(currentUser);
     this.userService.updateUser(username, user).subscribe();
-    this.router.navigate(["/"]);
+    this.router.navigate(["/home"]);
   }
 
-  deleteAcc(user: User){
-    this.userService.deleteAcc(user).subscribe({next:
+  deleteAcc(){
+    this.userService.deleteAcc().subscribe({next:
       ((res: any) => {
         this.router.navigate(["/login"]);
       }),error:

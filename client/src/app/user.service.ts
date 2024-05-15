@@ -64,13 +64,27 @@ export class UserService {
   }
 
   getFollowers(): Observable<User[]>{
-    return this.http.get<User[]>(`/api/users/${this.currentUser?.username}`);
+    return this.http.get<User[]>(`/api/user/followers/${this.currentUser?.username}`);
   }
 
   follow(): Observable<User> {
     return this.http.patch<User>(`/api/user/follows/${this.currentUser?.username}/${this.otherUser?.username}`, this.currentUser).pipe(
       tap((res: User) => {
-        console.log(res);
+        this.users.update((users: User[]) => {
+          return users.map((user: User) => {
+            if(this.currentUser?._id == user._id){
+              if(!user.following.includes(this.otherUser!.username)){
+                return { ...user, following: res.following };
+              } else {
+                const following = user.following.filter((f: string) => {
+                      f != this.otherUser!.username;});
+                      console.log(following)
+                return { ...user, following: following };
+              }
+            }
+            return user;
+          })
+        })
       })
     );
   }
@@ -85,15 +99,40 @@ export class UserService {
 
   updateUser(username: string, newData: User): Observable<User>{
     return this.http.patch<User>(`/api/user/${username}`, newData).pipe(
-      tap((res: any) => {
+      tap((res: User) => {
         this.postService.updatePosts(username, res.username).subscribe();
+        this.updateFollowers(username, res).subscribe();
       })
     );
   }
 
-  deleteAcc(user: User): Observable<User>{
-    return this.http.delete<User>(`/api/user/${user.username}`).pipe(
+  updateFollowers(username: string, user: User): Observable<User>{
+    return this.http.patch<User>(`/api/user/${username}`, user).pipe(
       tap((res: User) => {
+        this.users.update((users: User[]) => {
+          for(let u of users) {
+            if(u.following.indexOf(username) != -1){
+              u.following[u.following.indexOf(username)] = user.username;
+            }
+          }
+          return users;
+        })
+      })
+    );
+  }
+
+  deleteAcc(): Observable<User>{
+    return this.http.delete<User>(`/api/user/${this.currentUser!.username}`).pipe(
+      tap((res: User) => {
+        this.users.update((users: User[]) => {
+          for(let u of users){
+            if(u.following.includes(this.currentUser!.username)){
+              u.following.filter((us: string) => { us != this.currentUser!.username });
+            }
+          }
+          return users;
+        })
+        this.postService.removeOnDeleteAcc(this.currentUser!);
         this.clearCurrentUser();
       })
     )

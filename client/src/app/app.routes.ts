@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 import { UsersPageComponent } from './users-page/users-page.component';
 
 export const routes: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "/home" },
+  { path: "", pathMatch: "full", redirectTo: "/login" },
   { path: "login", component: LoginComponent },
   { path: "home", component: HomeComponent },
   { path: "profile", component: ProfileComponent },

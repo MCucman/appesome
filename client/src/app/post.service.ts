@@ -3,7 +3,6 @@ import { Post } from './home/home.component';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { User } from './login/login.component';
-// import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class PostService {
   posts: WritableSignal<Post[]> = signal([]);
 
   getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>("/api/posts").pipe(
+    return this.http.get<Post[]>("/api/post").pipe(
       tap((res: Post[]) =>{
         this.posts.set(res.reverse());
       })
@@ -60,7 +59,6 @@ export class PostService {
     )
   }
 
-
   deletePost(post: Post): Observable<Post>{
     return this.http.delete<Post>(`/api/post/${post._id}`).pipe(
       tap((res: Post) => {
@@ -71,6 +69,18 @@ export class PostService {
         })
       })
     )
+  }
+
+  removeOnDeleteAcc(user: User){
+    this.posts.update((posts: Post[]) => {
+      for(let post of posts){
+        if(post.likes.includes(user.username))
+          post.likes.filter((u: string) => { u != user.username });
+        if(post.author == user.username)
+          this.deletePost(post).subscribe();
+      }
+      return posts;
+    })
   }
 
   updatePosts(oldUsername: string, newUsername: string): Observable<Post[]>{

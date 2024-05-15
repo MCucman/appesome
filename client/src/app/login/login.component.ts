@@ -44,6 +44,7 @@ export class LoginComponent {
         (exists => {
           if (exists) {
             alert('Username already exists');
+            this.form.reset();
           } else {
             this.createUser();
           }
@@ -63,7 +64,7 @@ export class LoginComponent {
     user.following = [];
     this.userService.createUser(user).subscribe({next:
       ((res: any) => {
-        this.router.navigate(["/"]);
+        this.router.navigate(["/home"]);
       }),error:
       (err => {
         console.error(err);

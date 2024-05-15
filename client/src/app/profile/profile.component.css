@@ -18,21 +18,19 @@ div > a:hover {
   display: flex;
   justify-content: space-between;
   margin: 20px 0;
-  max-height: 120px;
 }
 
 
 .post {
   margin-top: 50px;
+  margin-bottom: 120px;
   color: rgb(132, 50, 2);
 }
 
 .my-card {
-  max-height: 30px;
   min-width: max-content;
-  flex-direction: row;
-  justify-content: end;
-  margin-right: 20px;
+  justify-content: space-between;
+  max-height: 60px;
 }
 
 ul {
@@ -59,7 +57,6 @@ button {
 }
 
 .popup-container {
-  position: relative;
   margin-top: 45px;
   height: fit-content;
   background-color: rgb(251, 243, 234);
@@ -67,6 +64,7 @@ button {
   padding: 0 10px;
   border: 1px solid brown;
   border-radius: 10px;
+  justify-self: end;
 }
 
 .popup {
@@ -81,8 +79,14 @@ button {
 }
 
 .btn {
-  max-height: min-content;
   width: fit-content;
-  padding-top: 0;
-  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.desc {
+  max-width: 70%;
+}
+
+.idk {
+  margin-left: 200px;
 }

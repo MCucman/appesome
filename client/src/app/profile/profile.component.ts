@@ -16,7 +16,11 @@ import { User } from '../login/login.component';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  constructor(protected postService: PostService, protected userService: UserService, protected router: Router){}
+  constructor(protected postService: PostService, protected userService: UserService, protected router: Router){
+    this.getFollowers();
+  }
+
+  protected followers: User[] = [];
 
   logout(){
     this.userService.clearCurrentUser();
@@ -73,12 +77,12 @@ export class ProfileComponent {
     return false;
   }
 
-  followers(){
-    let followers: User[] = [];
-    this.userService.getFollowers().subscribe((res: User[]) => {
-      followers = res;
-    });
-    return followers;
+  getFollowers() {
+    this.userService.getFollowers().subscribe(
+      ((res: User[]) => {
+        this.followers = res.reverse();
+      })
+    )
   }
 
   deletePost(post: Post){

@@ -43,6 +43,12 @@ export class UsersPageComponent {
   }
 
   follow(){
-    this.userService.follow().subscribe();
+    this.userService.follow().subscribe((res: User) => {
+      this.userService.setCurrentUser(res);
+    });
+  }
+
+  following(){
+    return this.userService.currentUser!.following.includes(this.userService.otherUser!.username);
   }
 }

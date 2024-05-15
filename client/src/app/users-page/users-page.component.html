@@ -3,7 +3,11 @@
     <div class="g-0 col-md-8 card-body mb-3">
       <div class="d-flex justify-content-around w-25 mb-3">
         <h5 class="card-title"> {{ userService.otherUser.username }} </h5>
-        <button (click)="follow()">follow</button>
+        <button (click)="follow()">
+          <div *ngIf="!following()"> follow </div>
+          <div *ngIf="following()"> following </div>
+        </button>
+
       </div>
       <p class="card-text"> {{ userService.otherUser.description }} </p>
     </div>

@@ -46,8 +46,7 @@ export class HomeComponent {
   }
 
   updateLike(post: Post, user: User) {
-    if(this.userService.currentUser)
-      this.postService.updatePost(post, user).subscribe();
+    this.postService.updatePost(post, user).subscribe();
   }
 
   popup: {[key: string]: boolean} = {};
