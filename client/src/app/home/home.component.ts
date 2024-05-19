@@ -29,7 +29,11 @@ export class HomeComponent {
     content: new FormControl("")
   });
 
-  constructor(protected postService: PostService, protected userService: UserService, protected router: Router){}
+  constructor(protected postService: PostService, protected userService: UserService, protected router: Router){
+    postService.getPosts().subscribe();
+    if(!userService.currentUser)
+      router.navigate(['/']);
+  }
 
   createPost() {
     const post: Post = this.form.value;
@@ -65,6 +69,7 @@ export class HomeComponent {
 
   getOtherUser(username: string){
     if(this.userService.currentUser){
+
       if(username != this.userService.currentUser.username){
         this.userService.getUser(username).subscribe((res: User) => {
           this.userService.setOtherUser(res);

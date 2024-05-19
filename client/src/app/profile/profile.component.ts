@@ -18,6 +18,9 @@ import { User } from '../login/login.component';
 export class ProfileComponent {
   constructor(protected postService: PostService, protected userService: UserService, protected router: Router){
     this.getFollowers();
+    postService.getPosts().subscribe();
+    if(!userService.currentUser)
+      router.navigate(['/']);
   }
 
   protected followers: User[] = [];

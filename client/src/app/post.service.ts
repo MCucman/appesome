@@ -36,7 +36,7 @@ export class PostService {
 
   updatePost(post: Post, user: User): Observable<Post> {
     return this.http.patch<Post>(`/api/post/${post._id}/${user.username}`, {post, user}).pipe(
-      tap((res: Post) => {
+      tap(() => {
         this.posts.update((posts: Post[]) => {
           return posts.map((p: Post) => {
             if(!post.likes.includes(user.username)){
@@ -61,7 +61,7 @@ export class PostService {
 
   deletePost(post: Post): Observable<Post>{
     return this.http.delete<Post>(`/api/post/${post._id}`).pipe(
-      tap((res: Post) => {
+      tap(() => {
         this.posts.update((posts: Post[]) => {
           return posts.filter((post_: Post) => {
             return post_._id !== post._id;
@@ -85,7 +85,7 @@ export class PostService {
 
   updatePosts(oldUsername: string, newUsername: string): Observable<Post[]>{
     return this.getPosts().pipe(
-      tap((res: Post[]) => {
+      tap(() => {
         this.posts.update((posts: Post[]) => {
           for(let post of posts) {
             if(post.author == oldUsername)

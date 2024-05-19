@@ -3,6 +3,7 @@ import { User } from './login/login.component';
 import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { PostService } from './post.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,7 +49,7 @@ export class UserService {
     return this.http.get<boolean>(`/api/user/exists/${id}`);
   }
 
-  createUser(user: User): Observable<User>{
+  createUser(user: User): Observable<User> {
     return this.http.post<User>('/api/user', user).pipe(
       tap((res: User) => {
         this.users.update((users: User[]) => {
@@ -56,29 +57,29 @@ export class UserService {
         });
         this.setCurrentUser(res);
       })
-    )
+    );
   }
 
   getUser(username: string): Observable<User> {
     return this.http.get<User>(`/api/user/${username}`);
   }
 
-  getFollowers(): Observable<User[]>{
+  getFollowers(): Observable<User[]> {
     return this.http.get<User[]>(`/api/user/followers/${this.currentUser?.username}`);
   }
 
   follow(): Observable<User> {
-    return this.http.patch<User>(`/api/user/follows/${this.currentUser?.username}/${this.otherUser?.username}`, this.currentUser).pipe(
+    return this.http.patch<User>(`/api/user/follows/${this.currentUser?.username}/${this.otherUser?.username}`, {}).pipe(
       tap((res: User) => {
         this.users.update((users: User[]) => {
           return users.map((user: User) => {
-            if(this.currentUser?._id == user._id){
-              if(!user.following.includes(this.otherUser!.username)){
+            if (this.currentUser?._id == user._id) {
+              if (!user.following.includes(this.otherUser!.username)) {
                 return { ...user, following: res.following };
               } else {
                 const following = user.following.filter((f: string) => {
-                      f != this.otherUser!.username;});
-                      console.log(following)
+                  return f != this.otherUser!.username;
+                });
                 return { ...user, following: following };
               }
             }
@@ -97,7 +98,11 @@ export class UserService {
    );
   }
 
-  updateUser(username: string, newData: User): Observable<User>{
+  verifyPassword(username: string, password: string): Observable<boolean> {
+    return this.http.post<boolean>(`/api/user/verifyPassword`, { username, password });
+  }
+
+  updateUser(username: string, newData: User): Observable<User> {
     return this.http.patch<User>(`/api/user/${username}`, newData).pipe(
       tap((res: User) => {
         this.postService.updatePosts(username, res.username).subscribe();
@@ -106,12 +111,12 @@ export class UserService {
     );
   }
 
-  updateFollowers(username: string, user: User): Observable<User>{
+  updateFollowers(username: string, user: User): Observable<User> {
     return this.http.patch<User>(`/api/user/${username}`, user).pipe(
-      tap((res: User) => {
+      tap(() => {
         this.users.update((users: User[]) => {
-          for(let u of users) {
-            if(u.following.indexOf(username) != -1){
+          for (let u of users) {
+            if (u.following.indexOf(username) != -1) {
               u.following[u.following.indexOf(username)] = user.username;
             }
           }
@@ -121,13 +126,13 @@ export class UserService {
     );
   }
 
-  deleteAcc(): Observable<User>{
+  deleteAcc(): Observable<User> {
     return this.http.delete<User>(`/api/user/${this.currentUser!.username}`).pipe(
-      tap((res: User) => {
+      tap(() => {
         this.users.update((users: User[]) => {
-          for(let u of users){
-            if(u.following.includes(this.currentUser!.username)){
-              u.following.filter((us: string) => { us != this.currentUser!.username });
+          for (let u of users) {
+            if (u.following.includes(this.currentUser!.username)) {
+              u.following = u.following.filter((us: string) => us != this.currentUser!.username);
             }
           }
           return users;
@@ -138,5 +143,3 @@ export class UserService {
     )
   }
 }
-
-

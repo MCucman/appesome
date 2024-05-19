@@ -3,43 +3,40 @@ import { Router, RouterLink } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../user.service';
 import { CommonModule } from '@angular/common';
-import { User } from '../login/login.component';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 
 @Component({
   selector: 'app-settings',
   standalone: true,
   imports: [RouterLink, NgbModule, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css'
+  styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
   form: FormGroup = new FormGroup({
     email: new FormControl(""),
     username: new FormControl(""),
     description: new FormControl(""),
-    password: new FormControl(""),
-    password2: new FormControl("")
+    currentPassword: new FormControl(""),
+    newPassword: new FormControl(""),
+    confirmPassword: new FormControl("")
   });
 
-  constructor(protected userService: UserService, protected router: Router){}
+  constructor(protected userService: UserService, protected router: Router) {
+    if(!userService.currentUser)
+      router.navigate(['/']);
+  }
 
-  updateUser(){
+  updateUser() {
     const user = this.form.value;
-    let username = '';
-    let password = '';
-    if(this.userService.currentUser){
-      username = this.userService.currentUser.username;
-      password = this.userService.currentUser.password;
-    }
-    if(password !== user['password2']){
-      alert('wrong password');
-      delete user['password2'];
+    const username = this.userService.currentUser!.username;
+
+    if (user.newPassword && user.newPassword !== user.confirmPassword) {
+      alert("Wrong confirm password");
       return;
     }
 
-    delete user['password2'];
+    delete user.confirmPassword;
 
     Object.keys(user).forEach(key => {
       if (user[key] === null || user[key] === undefined || user[key] === '') {
@@ -47,32 +44,71 @@ export class SettingsComponent {
       }
     });
 
-    this.userService.checkUsernameExists(user['username']).subscribe({ next:
-      (exists => {
-        if(exists && user['username'] != username){
-          alert("Username taken.");
+    this.userService.verifyPassword(username, user.currentPassword).subscribe({
+      next: (isValid) => {
+        if (!isValid) {
+          alert("Current password is incorrect");
           return;
-        } else {
+        }
+        delete user.currentPassword;
+
+        if (user.newPassword) {
+          user.password = user.newPassword;
+          delete user.newPassword;
+        }
+        if(user.username){
+          this.userService.checkUsernameExists(user.username).subscribe({
+            next: (exists) => {
+              if (exists && user.username !== username) {
+                alert("Username taken.");
+                return;
+              } else {
+                const currentUser = { ...this.userService.currentUser, ...user };
+                this.userService.setCurrentUser(currentUser);
+                this.userService.updateUser(username, user).subscribe({
+                  next: () => {
+                    this.router.navigate(["/home"]);
+                  },
+                  error: (err) => {
+                    console.error("Error updating user:", err);
+                  }
+                });
+              }
+            },
+            error: (err) => {
+              console.error("Error checking username:", err);
+            }
+          });
+        }else{
           const currentUser = { ...this.userService.currentUser, ...user };
           this.userService.setCurrentUser(currentUser);
-          this.userService.updateUser(username, user).subscribe();
-          this.router.navigate(["/home"]);
+          this.userService.updateUser(username, user).subscribe({
+            next: () => {
+              this.router.navigate(["/home"]);
+            },
+            error: (err) => {
+              console.error("Error updating user:", err);
+            }
+          });
         }
-      })
-    });
 
+      },
+      error: (err) => {
+        console.error("Error verifying password:", err);
+      }
+    });
   }
 
-  deleteAcc(){
-    this.userService.deleteAcc().subscribe({next:
-      ((res: any) => {
-        this.router.navigate(["/login"]);
-      }),error:
-      (err => {
-        console.error(err);
-      })
-    });
+  deleteAcc() {
+    if(confirm('Are you sure you want to delete your account?')){
+      this.userService.deleteAcc().subscribe({
+        next: () => {
+          this.router.navigate(["/login"]);
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+    }
   }
 }
-
-

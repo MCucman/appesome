@@ -35,7 +35,10 @@ export class LoginComponent {
     password2: new FormControl("")
   });
 
-  constructor(protected userService: UserService, protected router: Router) {}
+  constructor(protected userService: UserService, protected router: Router) {
+    if(userService.currentUser)
+      router.navigate(['/home']);
+  }
 
   register(): void {
     const user = this.form.value;
@@ -63,7 +66,7 @@ export class LoginComponent {
     user.description = '';
     user.following = [];
     this.userService.createUser(user).subscribe({next:
-      ((res: any) => {
+      (() => {
         this.router.navigate(["/home"]);
       }),error:
       (err => {
@@ -80,28 +83,16 @@ export class LoginComponent {
     delete user['username2'];
     delete user['email2'];
     delete user['password2'];
-    this.userService.checkUsernameExists(user.username).subscribe( {next:
-      (exists => {
-        if (exists) {
-          this.userService.getUser(user.username).subscribe({ next:
-            ((res: User) => {
-              if(user.email == res.email && user.password == res.password){
-                this.userService.login(user).subscribe();
-                this.router.navigate(["/home"]);
-              } else {
-                alert('invalid credentials');
-              }
-            })
-          })
-        }else{
-          this.form2.reset();
-          alert("user doesn't exist");
-        }
+    if(user.username && user.email && user.password){
+      this.userService.login(user).subscribe({next:
+      (() => {
+        this.router.navigate(["/home"]);
+      }), error:
+      (err => {
+        console.error('Invalid login credentials', err);
+        alert('Invalid login credentials');
       })
-    }),({error: (err: any) => {
-      console.error(err);
-        }
-      })
+    });
   }
-
+}
 }

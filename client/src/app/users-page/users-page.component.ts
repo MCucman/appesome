@@ -14,7 +14,10 @@ import { User } from '../login/login.component';
   styleUrl: './users-page.component.css'
 })
 export class UsersPageComponent {
-  constructor(protected postService: PostService, protected userService: UserService, protected router: Router){}
+  constructor(protected postService: PostService, protected userService: UserService, protected router: Router){
+    if(!userService.currentUser)
+      router.navigate(['/']);
+  }
 
   updateLike(post: Post, user: User) {
     this.postService.updatePost(post, user).subscribe();
