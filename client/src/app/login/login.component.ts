@@ -83,16 +83,35 @@ export class LoginComponent {
     delete user['username2'];
     delete user['email2'];
     delete user['password2'];
-    if(user.username && user.email && user.password){
-      this.userService.login(user).subscribe({next:
-      (() => {
-        this.router.navigate(["/home"]);
-      }), error:
-      (err => {
-        console.error('Invalid login credentials', err);
-        alert('Invalid login credentials');
+    this.userService.checkUsernameExists(user.username).subscribe( {next:
+      (exists => {
+        if (exists) {
+          this.userService.getUser(user.username).subscribe({ next:
+            ((res: User) => {
+              this.userService.verifyPassword(user.username, user.password).subscribe( { next:
+                ((isPasswordCorrect:boolean) => {
+                  if(user.email == res.email && isPasswordCorrect){
+                    this.userService.login(user).subscribe({next:
+                      (() => {
+                        this.router.navigate(["/home"]);
+                      })
+                    });
+                  } else {
+                    alert('invalid credentials');
+                  }
+                })
+              })
+            })
+          })
+        }else{
+          this.form2.reset();
+          alert("user doesn't exist");
+        }
       })
-    });
+    }),({error: (err: any) => {
+      console.error(err);
+        }
+    })
   }
 }
-}
+

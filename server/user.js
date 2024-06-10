@@ -81,6 +81,7 @@ router.post("/verifyPassword", async (req, res) => {
           return res.json(false);
       }
       const isPasswordValid = await bcrypt.compare(password, user.password);
+      console.log(isPasswordValid)
       res.json(isPasswordValid);
   } catch (error) {
       console.error('Error verifying password:', error);
