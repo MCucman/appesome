@@ -65,6 +65,8 @@ button {
   border: 1px solid brown;
   border-radius: 10px;
   justify-self: end;
+  position: relative;
+  z-index: 1;
 }
 
 .popup {
@@ -87,6 +89,6 @@ button {
   max-width: 70%;
 }
 
-.idk {
+.ml {
   margin-left: 200px;
 }

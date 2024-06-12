@@ -19,7 +19,7 @@
           <a routerLink="/settings"> Settings </a>
         </div>
       </div>
-      <div class="popup-container idk" *ngIf="showPopupF('fs')">
+      <div class="popup-container ml" *ngIf="showPopupF('fs')">
         <div class="popup">
           <h5>Followers</h5>
           <ul>
@@ -30,7 +30,7 @@
           <button (click)="togglePopupF('fs')">Close</button>
         </div>
       </div>
-      <div class="popup-container idk" *ngIf="showPopupF('fing')">
+      <div class="popup-container ml" *ngIf="showPopupF('fing')">
         <div class="popup">
           <h5>Following</h5>
           <ul>
@@ -49,7 +49,7 @@
         <ul id="posts">
           <li *ngFor="let post of postService.posts()">
             <div class="row" *ngIf="post.author==userService.currentUser.username">
-              <div class="card mt-5" style="max-width: 80%; color: rgb(105, 25, 0);">
+              <div class="card mt-5 col-md-9" style="max-width: 80%; color: rgb(105, 25, 0);">
                 <div class="d-inline-flex">
                   <div class="row g-0 col-md-10 card-body">
                     <h5 class="card-title"> {{ post.title }} </h5>

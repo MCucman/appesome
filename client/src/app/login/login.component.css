@@ -2,6 +2,7 @@
   margin: 100px 0;
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 h5 {
@@ -11,4 +12,24 @@ h5 {
 .my-card {
   height: fit-content;
   color: brown;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .all {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .my-card {
+    width: 90%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 576px) {
+  .my-card {
+    width: 100%;
+    max-width: none;
+  }
 }

@@ -1,7 +1,7 @@
 .link {
   padding: 7px;
   color: bisque;
-  background-color:chocolate;
+  background-color: chocolate;
   border-radius: 10px;
   text-decoration: none;
   font-size: large;
@@ -33,9 +33,8 @@
 textarea {
   border: none;
   width: 100%;
-  height:fit-content;
+  height: fit-content;
   color: brown;
-
 }
 
 textarea:focus {
@@ -93,4 +92,51 @@ button {
 
 .popup button {
   margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .div-top {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .new-post {
+    width: 90%;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+
+  .popup-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .link {
+    font-size: medium;
+    padding: 5px;
+  }
+
+  .new-post {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .card {
+    margin: 0 10px;
+  }
+
+  .popup-container {
+    width: 100%;
+  }
+
+  h3 {
+    font-size: large;
+  }
+
+  h5 {
+    font-size: medium;
+  }
 }
